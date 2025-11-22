@@ -176,9 +176,9 @@ footer {
 
 /* Bulleted list with nicer spacing and avatar-like initials */
 .participants-list {
-  list-style: disc;
+  list-style: none;
   margin: 0;
-  padding-left: 22px;
+  padding-left: 0;
   display: block;
 }
 
@@ -205,6 +205,22 @@ footer {
   font-weight: 600;
   font-size: 12px;
   border: 1px solid #d0e2ff;
+}
+
+/* Remove button for participants */
+.participant-remove {
+  background: transparent;
+  border: none;
+  color: #c62828;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 6px;
+  margin-left: auto;
+  border-radius: 4px;
+}
+
+.participant-remove:hover {
+  background: rgba(198,40,40,0.08);
 }
 
 /* If there are no participants, show a subtle hint */

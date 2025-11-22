@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
   }
 
-  function createParticipantItem(email) {
+  function createParticipantItem(email, activityName) {
     const li = document.createElement("li");
     li.className = "participant-item";
 
@@ -35,8 +35,56 @@ document.addEventListener("DOMContentLoaded", () => {
     text.className = "participant-email";
     text.textContent = email;
 
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "participant-remove";
+    removeBtn.setAttribute("aria-label", `Remove ${email}`);
+    removeBtn.title = `Remove ${email}`;
+    removeBtn.type = "button";
+    removeBtn.textContent = "✖";
+
+    removeBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      clearMessage();
+
+      try {
+        const url = `/activities/${encodeURIComponent(activityName)}/participants?email=${encodeURIComponent(email)}`;
+        const res = await fetch(url, { method: "DELETE" });
+        const payload = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          const detail = payload.detail || payload.message || res.statusText || "Unregister failed";
+          showMessage(detail, "error");
+          return;
+        }
+
+        // Remove the list item from the DOM and update count
+        const card = li.closest('.activity-card');
+        const list = card?.querySelector('.participants-list');
+        const countEl = card?.querySelector('.participants-count');
+        li.remove();
+
+        if (list && list.children.length === 0) {
+          const hint = document.createElement('li');
+          hint.className = 'no-participants';
+          hint.textContent = 'No participants yet.';
+          list.appendChild(hint);
+        }
+
+        if (countEl) {
+          const newCount = Math.max(0, Number(countEl.textContent || 0) - 1);
+          countEl.textContent = String(newCount);
+        }
+
+        showMessage(payload.message || `Unregistered ${email} from ${activityName}`, "success");
+      } catch (err) {
+        showMessage(err.message || "Unregister failed", "error");
+      }
+    });
+
     li.appendChild(badge);
     li.appendChild(text);
+    li.appendChild(removeBtn);
     return li;
   }
 
@@ -94,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         listEl.appendChild(hint);
       } else {
         participants.forEach((email) => {
-          listEl.appendChild(createParticipantItem(email));
+          listEl.appendChild(createParticipantItem(email, name));
         });
       }
       if (countEl) countEl.textContent = String(participants.length);
@@ -159,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
       showMessage(payload.message || `Signed up ${email} for ${activityName}`, "success");
 
       // Update the participants list in the card
-      const card = document.querySelector(`.activity-card[data-activity="${CSS.escape(activityName)}"]`);
+      const card = document.querySelector(`.activity-card[data-activity=${CSS.escape(activityName)}]`);
       if (card) {
         const list = card.querySelector(".participants-list");
         const countEl = card.querySelector(".participants-count");
@@ -168,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (noNode) noNode.remove();
 
         // append new item and bump count
-        list.appendChild(createParticipantItem(email));
+        list.appendChild(createParticipantItem(email, activityName));
         if (countEl) {
           const newCount = Number(countEl.textContent || 0) + 1;
           countEl.textContent = String(newCount);
