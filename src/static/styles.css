@@ -142,3 +142,86 @@ footer {
   padding: 20px;
   color: #666;
 }
+
+/* Participants section styling */
+.participants {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #e0e0e0;
+}
+
+.participants-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.participants-title {
+  font-size: 14px;
+  color: #1a237e;
+  margin: 0;
+  font-weight: 600;
+}
+
+.participants-count {
+  background: #e8f0ff;
+  color: #1a237e;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  border: 1px solid #cfe0ff;
+}
+
+/* Bulleted list with nicer spacing and avatar-like initials */
+.participants-list {
+  list-style: disc;
+  margin: 0;
+  padding-left: 22px;
+  display: block;
+}
+
+.participant-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Small circular initial badge for each participant */
+.participant-initial {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8f0ff, #cfe0ff);
+  color: #1a237e;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+  border: 1px solid #d0e2ff;
+}
+
+/* If there are no participants, show a subtle hint */
+.participants .no-participants {
+  font-size: 13px;
+  color: #666;
+  padding: 6px 0;
+}
+
+/* Small adjustments for mobile readability */
+@media (max-width: 480px) {
+  .participant-item {
+    font-size: 13px;
+  }
+  .participant-initial {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+}
