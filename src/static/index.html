@@ -16,8 +16,31 @@
       <section id="activities-container">
         <h3>Available Activities</h3>
         <div id="activities-list">
-          <!-- Activities will be loaded here -->
-          <p>Loading activities...</p>
+          <!-- Template for activity cards — scripts can clone this and fill in data -->
+          <template id="activity-template">
+            <article class="activity-card" role="article" aria-label="Activity">
+              <h4 class="activity-name">Activity name</h4>
+              <p class="activity-desc">Short description</p>
+              <p class="activity-schedule"><strong>Schedule:</strong> <span></span></p>
+
+              <!-- Participants section -->
+              <div class="participants" aria-live="polite">
+                <div class="participants-header">
+                  <h5 class="participants-title">Participants</h5>
+                  <span class="participants-count" aria-hidden="true">0</span>
+                </div>
+                <ul class="participants-list">
+                  <!-- Filled with <li class="participant-item">email@domain</li> -->
+                </ul>
+              </div>
+
+              <div class="activity-actions">
+                <button class="signup-btn" type="button">Sign Up</button>
+              </div>
+            </article>
+          </template>
+
+          <p class="info">Loading activities...</p>
         </div>
       </section>
 
